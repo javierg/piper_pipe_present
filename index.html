@@ -1,40 +1,778 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+        <title>reveal.js</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/black.css">
+        <link rel="stylesheet" href="css/custom.css">
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+        <!-- Theme used for syntax highlighted code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css">
+        <script src="plugin/highlight/highlight.js"></script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-background-color="#0e0e0e">
+                    <img src="images/logo.png">
+                    <header>Llevando tus datos a los mejores escenarios</header>
+                    <h5>Canalización de datos con Elixir y Broadway</h5>
+                </section>
+                <section data-background-image="images/broadway.jpg">
+                    <div style="background: rgba(0, 0, 0, 0.8); padding: 20px">
+                        <h4>Programa del show</h4>
+                        <ul>
+                            <li>¿Qué es un Data Pipeline?</li>
+                            <li>¿Qué problemas resuelve?</li>
+                            <li>Nuestro ejemplo</li>
+                            <li>Solución utilizando PubSub</li>
+                            <li>Preguntas</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h1>¿Qué es un Data Pipeline?</h1>
+                </section>
+                <section>
+                    <div style="float: left">
+                        <img src="images/pipelines.jpeg">
+                    </div>
+                    <div>
+                        <p style="text-align: left">Es un proceso conformado por una serie de pasos, en el que cada etapa del proceso recibe datos,
+                        que transformará y dará como entrada a la siguiente etapa. Una ves terminado el proceso, los datos resultantes
+                        serán entregados a un "destino", ya sea una forma de almacenamiento temporal o permanente.</p>
+                    </div>
+                </section>
+                <section>
+                    <h1>Arquitectura Base</h1>
+                    <img src="images/data-pipeline.jpg">
+                </section>
+                <section>
+                    <h1>¿Qué problemas resuelve un Data Pipeline?</h1>
+                </section>
+                <section>
+                    <div style="float: left">
+                        <img src="images/sewer-pipes.jpeg">
+                    </div>
+                    <ol>
+                        <li>Presentación y uso de datos de fuentes diversas</li>
+                        <li>Los datos carecen de estructura o la misma no está estandarizado</li>
+                        <li>Se requieren transformaciones costosas y la integridad de los datos no puede estar en riesgo</li>
+                    </ol>
+                </section>
+                <section>
+                    <h5>Supongamos que tenemos 3 juegos.</h5>
+                    <img src="images/games.png">
+                            <p class="fragment">Cada juego es independiente con su propio set de datos</p>
+                            <p class="fragment">Hay un tablero de líderes compartido entre los juegos</p>
+                            <p class="fragment">Cada juego se desarrolló por equipos independientes</p>
+                            <p class="fragment">El backend del primer juego utilizaron MySQL hospedado en un host virtual</p>
+                            <p class="fragment">El segundo juego está usando un backend con MongoDB Atlas hospedado en AWS</p>
+                            <p class="fragment">El tercer juego No guarda datos en una BD externa, solo en el dispositivo</p>
+                </section>
+                <section>
+                    <h5>Infraestructura</h5>
+                    <img src="images/games-infra.jpg">
+                </section>
+                <section>
+                    <h5>Presentando PubSub</h5>
+                    <img src="images/pubsub-infra.jpg">
+                </section>
+                <section data-background-image="images/clouds.jpg">
+                    <section>
+                        <h1 style="text-shadow: 2px 2px #000;">GCP PubSub</h1>
+                    </section>
+                    <section>
+                        <h1 style="text-shadow: 2px 2px #000;">https://console.google.com</h1>
+                    </section>
+                    <section>
+                        <img src="images/gcp/home.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/new-project.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/create.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/dashboard.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/search.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/enable.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/topic.png">
+                    </section>
+                    <section>
+                        <img src="images/gcp/done.png">
+                    </section>
+                    <section>
+                        <h1 style="text-shadow: 2px 2px #000;">Bonus</h1>
+                    </section>
+                    <section>
+                        <img src="images/gcp/credentials.png">
+                    </section>
+                </section>
+                <section>
+                    <h1>Ahora sí, hagamos algo de Elixir</h1>
+                    <img src="images/logo-elixir.svg" height="200px">
+                </section>
+                <section>
+                    <div style="float: left"><img src="images/thinking.png"></div>
+                    <h5 style="margin-top: 25%">Pero antes, veamos que vamos a hacer</h5>
+                </section>
+                <section>
+                    <img src="images/presentacion-boradway-demo.jpg">
+                </section>
+                <section>
+                    <h1>Creamos una aplicación nueva</h1>
+                    <h5 class="fragment">con el supervisor habilitado</h5>
+                    <pre class="fragment"><code>> mix new piper-pipe --sup</code></pre>
+                </section>
+                <section>
+                    <h5>Esto nos arrojará direcciones para continuar</h5>
+                    <pre class="fragment"><code>
+* creating README.md
+* creating .formatter.exs
+* creating .gitignore
+* creating mix.exs
+* creating lib
+* creating lib/piper_pipe.ex
+* creating lib/piper_pipe/application.ex
+* creating test
+* creating test/test_helper.exs
+* creating test/piper_pipe_test.exs
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+Your Mix project was created successfully.
+You can use "mix" to compile it, test it, and more:
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+    cd piper_pipe
+    mix test
+
+Run "mix help" for more commands.
+                    </code></pre>
+                </section>
+                <section>
+                    <h5>El archivo mix necesitará las dependencias</h5>
+                    <pre><code>
+    # mix.exs
+
+    defmodule PiperPipe.MixProject do
+      use Mix.Project
+
+      ...
+
+      def application do
+        [
+          mod: {PiperPipe, []},
+          extra_applications: [
+            :ecto,
+            :exq,
+            :inets,
+            :logger,
+            :myxql,
+            :postgrex
+          ]
+        ]
+      end
+
+
+      defp deps do
+        [
+          {:broadway_cloud_pub_sub, "~> 0.6.0"},
+          {:ecto_sql, "~> 3.0"},
+          {:exq, "~> 0.14.0"},
+          {:goth, "~> 1.0"},
+          {:jason, "~> 1.1"},
+          {:myxql, ">= 0.0.0",
+          {:postgrex, ">= 0.0.0"}
+        ]
+      end
+    end
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Agreguemos los modelos en dónde<br>normalizaremos los datos</h1>
+                    <img src="images/pipes-2.jpeg" height="400">
+                </section>
+                <section>
+                    <pre><code>> mix ecto.gen.repo -r PiperPipe.Repo</code></pre>
+                </section>
+                <section>
+                    <h5>El resultado del comando nos dará dirección de que sigue...</h5>
+                    <pre class="fragment"><code>
+   * creating lib/piper_pipe/boards
+   * creating lib/piper_pipe/repo.ex
+   * creating config/config.exs
+   Don't forget to add your new repo to your supervision tree
+   (typically in lib/piper_pipe/application.ex):
+
+       {PiperPipe.Repo, []}
+
+   And to add it to the list of Ecto repositories in your
+   configuration files (so Ecto tasks work as expected):
+
+       config :piper_pipe,
+         ecto_repos: [PiperPipe.Repo]
+                      </code></pre>
+                </section>
+                <section>
+                    <section>
+                        <h5>La configuración general del proyecto</h5>
+                        <pre class="fragment"><code>
+# config/config.exs
+
+import Config
+
+config :piper_pipe,
+  ecto_repos: [PiperPipe.Repo, AmoungUs.Repo]
+
+config :piper_pipe, PiperPipe.Repo,
+  database: "piper_pipe_repo",
+  username: "username",
+  password: "password",
+  hostname: "localhost"
+
+config :piper_pipe, AmongUs.Repo,
+  database: "among_us_users",
+  username: "username",
+  password: "password",
+  hostname: "localhost",
+  socket: "/tmp/mdb-mysql.sock"
+
+config :goth,
+  json: System.get_env("GOOGLE_AUTH_JSON_FILE") |> File.read!()
+
+config :piper_pipe, PiperPipe.Subscriber,
+  project_id: "playground-314500",
+  subscription: "leader-board-sub",
+  producer_module: BroadwayCloudPubSub.Producer
+
+config :exq,
+  name: Exq,
+  host: "localhost",
+  namespace: nil,
+  database: 0,
+  port: 6379,
+  concurrency: 100,
+  queues: ["piper_pipe"],
+  poll_timeout: 50,
+  scheduler_poll_timeout: 200,
+  scheduler_enable: true,
+  max_retries: 25,
+  mode: :default,
+  shutdown_timeout: 5000,
+  start_on_application: false
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <h5>Agregaremos los hijos al arbol supervisor</h5>
+                    <pre><code>
+# lib/piper_pipe/application.ex
+
+defmodule PiperPipe.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  @impl true
+  def start(_type, _args) do
+    children = [
+      PiperPipe.Repo
+      AmongUs.Repo
+      PiperPipe.Subscriber,
+      %{
+        id: Exq,
+        start: {Exq, :start_link, []},
+        type: :supervisor
+      },
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: PiperPipe.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>El Supervisor</h1>
+                    <pre class="fragment"><code>iex > :supervisor.start()</code></pre>
+                    <a href="images/supervisor-full-size.png">
+                        <img class="fragment" src="images/supervisor.jpg">
+                    </a>
+                </section>
+                <section>
+                    <h5>Configuremos la base de datos del pipeline</h5>
+                    <pre class="fragment"><code>mix ecto.create</code></pre>
+                    <h5 class="fragment">Generemos las migraciones requeridas</h5>
+                    <pre class="fragment"><code>
+ > mix ecto.gen.migration add_boards_users_table -r PiperPipe.Repo
+ > mix ecto.gen.migration add_boards_games_table -r PiperPipe.Repo
+ > mix ecto.gen.migration add_boards_leaders_table -r PiperPipe.Repo
+                    </code></pre>
+                </section>
+                <section>
+                    <h5>A continuación configuramos nuestras 3 nuevas migraciones</h5>
+                    <pre><code>
+# priv/repo/migrations/20210521184708_add_boards_users_table.exs
+
+defmodule PiperPipe.Repo.Migrations.AddBoardsUsersTable do
+  use Ecto.Migration
+
+  def change do
+    create table("boards_users") do
+      add :username, :string, null: false
+      add :first_name, :string, null: false
+      add :last_name, :string, null: false
+      add :email, :string, null: false
+
+      timestamps()
+    end
+
+    create index("boards_users", :username)
+    create index("boards_users", :email)
+  end
+end
+
+# priv/repo/migrations/20210521184722_add_boards_game_table.exs
+
+defmodule PiperPipe.Repo.Migrations.AddBoardsGameTable do
+  use Ecto.Migration
+
+  def change do
+    create table("boards_games") do
+      add :name, :string, null: false
+
+      timestamps()
+    end
+  end
+end
+
+# priv/repo/migrations/20210521191708_add_boards_leaders_table.exs
+
+defmodule PiperPipe.Repo.Migrations.AddBoardsLeadersTable do
+  use Ecto.Migration
+
+  def change do
+    create table("boards_leaders") do
+      add :score, :integer, null: false
+      add :game_id, references(:boards_games), null: false
+      add :user_id, references(:boards_users), null: false
+
+      timestamps()
+    end
+
+    create index("boards_leaders", :game_id)
+    create index("boards_leaders", :user_id)
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <h5>Agregamos un esquema por cada tabla</h5>
+                    <pre class="fragment"><code>
+defmodule PiperPipe.Boards.User do
+  use Ecto.Schema
+
+  schema "boards_users" do
+    field :username
+    field :name
+    field :surname
+    field :email
+
+    timestamps()
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <h5>Los esquemas estan organizados dentro de un contexto: boards</h5>
+                    <pre class="fragment"><code>
+defmodule PiperPipe.Boards.Game do
+  use Ecto.Schema
+
+  schema "boards_leaders" do
+    field :name
+
+    timestamps()
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <h5>El contexto nos permitirá mantener el dominio de los esquemas claro</h5>
+                    <pre class="fragment"><code>
+defmodule PiperPipe.Boards.Leader do
+  use Ecto.Schema
+
+  schema "boards_leaders" do
+    field :score
+
+    belongs_to :game, Game
+    belongs_to :user, User
+
+    timestamps()
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <h5>Ahora ejecutamos las migraciones para guardar la estructura en la base de datos</h5>
+                    <pre class="fragment"><code>mix ecto.migrate</code></pre>
+                </section>
+                <section data-background-image="images/showtime.jpg">
+                    <h1 style="text-shadow: 2px 2px #000">Es hora del Show</h1>
+                </section>
+                <section>
+                    <h1>Lo primero es crear un subscriptor</h1>
+                    <img src="images/mail.jpg">
+                </section>
+                <section>
+                    <section>
+                        <pre><code>
+# lib/piper_pipe/subscriber.ex
+
+defmodule PiperPipe.Subscriber do
+  use Broadway
+  alias PiperPipe.Processor
+  alias PiperPipe.Subscriber
+
+  def start_link(_opts) do
+    Broadway.start_link(__MODULE__,
+      name: __MODULE__,
+      producer: [
+        module: producer_opts()
+      ],
+      processors: [
+        default: [concurrency: 2]
+      ],
+      batchers: [
+        default: [batch_size: 10]
+      ]
+    )
+  end
+
+  @doc """
+  This is the callback for a single message. The message received have this form
+
+  %Broadway.Message{
+    acknowledger: {BroadwayCloudPubSub.ClientAcknowledger,
+     #Reference<0.3247436956.2116288513.216948>,
+     %{
+       ack_id: "base64 encoded ack id"
+     }},
+    batch_key: :default,
+    batch_mode: :bulk,
+    batcher: :default,
+    data: ENCODED_DATA_JSON_STR,
+    metadata: %{}
+    status: :ok
+  }
+
+  The payload is a Map with the keys as:
+
+  ```
+    %{
+      "version"   => 1,         # Integer
+      "user_id"   => user_id,   # Integer
+      "game_name" => game_name, # String
+      "score"     => score      # Integer
+    }
+  ```
+  """
+  def handle_message(_processor_name, message, _context) do
+    message
+    |> Map.get(:data)
+    |> decode_data
+    |> Processor.process
+
+    message
+  end
+
+  def handle_batch(:default, messages, _batch_info, _context) do
+    messages
+  end
+
+  defp producer_opts do
+    config = fetch_config()
+
+    {
+      config[:producer_module],
+      subscription: project_subscription(config[:producer_module])
+    }
+  end
+
+  defp project_subscription(Broadway.DummyProducer), do: []
+  defp project_subscription(_) do
+    config = fetch_config()
+    "projects/#{config[:project_id]}/subscriptions/#{config[:subscription]}"
+  end
+
+  defp fetch_config, do: Application.get_env(:piper_pipe, Subscriber)
+  defp decode_data(message), do: Jason.decode!(message)
+    end
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <h1>Con el subscriptor listo,<br>vamos a definir un procesador</h1>
+                    <img src="images/workers.jpeg">
+                </section>
+                <section>
+                    <pre><code>
+# lib/piper_pipe/processor.ex
+
+defmodule PiperPipe.Processor do
+  @default_queue "piper_pipe"
+
+  @type pubsub_msg :: %{
+    required(Integer.t) => Integer.t,
+    required(Integer.t) => Integer.t,
+    required(String.t)  => String.t,
+    required(Integer.t) => Integer.t,
+    required(Integer.t) => Integer.t,
+  }
+
+  @spec process(pubsub_msg) :: :ok
+  def process(%{"version" => 1, "game_name" => game_name} = msg) do
+    Exq.enqueue(Exq, @default_queue, game_processor(game_name), [msg])
+  end
+
+  defp game_processor(name) do
+    game_module = Macro.camelize(name)
+    :"Elixir.PiperPipe.GameProcessor.#{game_module}"
+  end
+end
+                    </code></pre>
+                </section>
+                <section>
+                    <p>Esta parte es la más importante</p>
+                    <pre class="fragment"><code>
+Exq.enqueue(Exq, @default_queue, game_processor(game_name), [msg])
+                    </code></pre>
+                    <ul>
+                        <li class="fragment">Nombre del proceso: Exq</li>
+                        <li class="fragment">Nombre de la cola</li>
+                        <li class="fragment">Modulo que hara el trabajo</li>
+                        <li class="fragment">Lista de argumentos para el trabajo</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>¿Cómo se ve un trabajador?</h1>
+                    <img src="images/donkey.jpeg">
+                </section>
+                <section>
+                    <section>
+                        <pre><code>
+# lib/piper_pie/game_processor/among_use.ex
+
+defmodule PiperPipe.GameProcessor.AmongUs do
+  import Ecto.Query
+  import PiperPipe.GameProcessor.Common
+
+  alias PiperPipe.Boards.Game
+  alias PiperPipe.Repo
+
+  def perform(%{"user_id" => user_id,
+                "score" => score}) do
+
+     game_user = AmongUs.Repo.get(AmongUs.User, user_id)
+     game      = fetch_game()
+
+     find_or_create_user(game_user.email, game_user)
+     |> insert_game(game, score)
+  end
+
+  defp fetch_game do
+     Repo.one(from g in Game, where: g.name == "Among Us")
+  end
+end
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h1>Perfil del trabajador ideal</h1>
+                        <ul>
+                            <li class="fragment">Tiene una sola función pública llamada <em>perform</em></li>
+                            <li class="fragment">Recibe poca data como argumento, de preferencia, tipos simples</li>
+                            <li class="fragment">Su trabajo <strong style="color: aqua">no depende</strong> del estado de otros trabajos, porque puede ejecutarse en paralelo</li>
+                            <li class="fragment">Su trabajo es transaccional y seguro. Si falla puede volver a ejecuarse sin efectos secundarios</li>
+                        <ul>
+                    </section>
+                    <section>
+                        <h1>Este trabajo en particular se conecta al Repo<br>llamado AmongUs</h1>
+                        <pre class="fragment"><code>game_user = AmongUs.Repo.get(AmongUs.User, user_id)</code></pre>
+                    </section>
+                <section>
+                    <h1>Tenemos trabajos que pueden ejecutarse en paralelo tomando data de otras fuentas de datos</h1>
+                    <pre class="fragment"><code>
+# lib/piper_pipe/game_processor/fridays_night_funky.ex
+
+defmodule PiperPipe.GameProcesor.FridaysNightFunky do
+  import Ecto.Query
+  import PiperPipe.GameProcessor.Common
+
+  alias FridaysNightFunky.Service
+  alias PiperPipe.Boards.Game
+  alias PiperPipe.Repo
+
+  def perform(%{"user_id" => user_id,
+              "score" => score}) do
+
+    game_user = Service.get(user_id)
+    game      = fetch_game()
+
+    find_or_create_user(game_user.username, game_user)
+    |> insert_game(game, score)
+  end
+
+  defp fetch_game do
+    Repo.one(from g in Game, where: g.name == "Fridays Night Funky")
+  end
+end
+
+
+# lib/piper_pipe/game_processors/flappy_bird.ex
+
+defmodule PiperPipe.GameProcessor.FlappyBird do
+  import Ecto.Query
+  import PiperPipe.GameProcessor.Common
+
+  alias PiperPipe.Boards.Game
+
+  def perform(%{"user_id" => user_id,
+                "score" => score}) do
+
+     game_user = FlappyBird.Service.get(user_id)
+     game      = fetch_game()
+
+     find_or_create_user(game_user.username, game_user)
+     |> insert_game(game, score)
+  end
+
+  defp fetch_game do
+    PiperPipe.Repo.one(from g in Game, where: g.name == "Flappy Bird")
+  end
+end
+                    </code></pre>
+                </section>
+                </section>
+                <section>
+                    <div style="float: left"><img src="images/terminal.jpeg"></div>
+                    <h1>Iniciemos todo en consola</h1>
+                    <pre class="fragment"><code>mix deps.get</code></pre>
+                    <pre class="fragment"><code>> iex -S mix</code></pre>
+                </section>
+                <section>
+                    <h1>Si todo esta bien, el app no dara niguna señal de vida,<br>hasta recibir un mensaje</h1>
+                    <p class="fragment">Podemos verificar la cola de trabajos con el Api de Exq</p>
+                    <pre class="fragment"><code>
+iex > Exq.Api.stats Exq.Api, "processed"
+{:ok, 0}
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>El mensaje</h1>
+                    <pre><code>
+    {
+      "version": 1,
+      "user_id": 1,
+      "game_name": "among_us",
+      "score": 1000
+    }
+                    </code></pre>
+                </section>
+                <section>
+                    <p>Utilizaremos el Sandbox de Google Console apra enviar un mensaje de prueba</p>
+                    <img class="fragment" src="images/message-publish.jpg">
+                </section>
+                <section>
+                    <p>Enviado el mensaje, regresamos a la sesión de IEX que tenemos abierta</p>
+                    <img class="fragment" src="images/worker-small.png">
+                </section>
+                <section>
+                    <h1>El mensaje fue recibido y el proceso ejecutado</h1>
+                </section>
+                <section>
+                    <h1>Ahora veremos que el número de trabajos<br>se ha incrementado</h1>
+                    <pre class="fragment"><code>
+iex > Exq.Api.stats Exq.Api, "processed"
+{:ok, 1}
+                    </code></pre>
+                    <img class="fragment" src="images/job-done.jpg" height="420">
+                </section>
+                <section>
+                    <div><img src="images/fine.jpeg" height="400"></div>
+                    <h1 class="fragment">Manejo de errores</h1>
+                </section>
+                <section>
+                    <p>Los errores pueden ocurrir en 2 etapas del proceso</p>
+                    <ol>
+                        <li class="fragment">En el subscriptor de Broadway</li>
+                        <li class="fragment">En el worker de Exq</li>
+                    </ol>
+                    <p class="fragment">
+                        Cuando ocurren en el subscriptor, el producer no enviará respuesta satisfactoria a GCP,
+                        el cual re-enviara el mensaje, dependiendo del algoritmo seleccionado al crear el tópico.
+                    </p>
+                    <p class="fragment">
+                        Cuando el error ocurre dentro de los procesos de Exq, los procesos serán reintentados, de igual forma.
+                    </p>
+                </section>
+                <section>
+                    <p>GCP tiene herramientas para verificar el estado de los mensajes enviados</p>
+                    <p class="fragment">El mensaje solo se asegura que será enviado a 1 subscriptor</p>
+                    <p class="fragment">Asegurate de no obtener mensajes reales y marcarlos como recibidos para pruebas</p>
+                    <p class="fragment">genera subscriptores extras para evaluaciones y debugging</p>
+                </section>
+                <section>
+                    <h1>Exq tiene una interface gráfica para visualizar el estado de los procesos.</p>
+                    <img class="fragment" src="images/exq-ui.png">
+                </section>
+                <section>
+                    <p>Todo el código aquí mostrado está en este repositorio</p>
+                    <h1 class="fragment">https://github.com/javierg/piper_pipe</h1>
+                </section>
+                <section>
+                    <h1>Links</h1>
+                    <p>https://cloud.google.com/pubsub/docs</p>
+                    <p>https://hexdocs.pm/broadway/Broadway.html</p>
+                    <p>https://hexdocs.pm/exq/Exq.Api.html</p>
+                    <p>https://blog.appsignal.com/2019/12/12/how-to-use-broadway-in-your-elixir-application.html</p>
+                </section>
+                <section>
+                    <h1>Preguntas</h1>
+                    <img src="images/questions.jpeg">
+                </section>
+            </div>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+
+                // Learn about plugins: https://revealjs.com/plugins/
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+            });
+        </script>
+    </body>
 </html>
